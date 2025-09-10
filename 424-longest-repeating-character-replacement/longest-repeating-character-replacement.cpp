@@ -15,7 +15,6 @@ public:
                 maxlen=max(maxlen,r-l+1);
             }else{
                 mp[s[l]-'a']--;
-                maxf=max(maxf,mp[s[l]-'a']);
                 if(mp[s[l]-'a']==0) mp.erase(mp[s[l]]-'a');
                 l++;
 
