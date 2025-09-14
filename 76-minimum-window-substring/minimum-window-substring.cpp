@@ -1,35 +1,33 @@
 class Solution {
 public:
-string minWindow(string s, string t) {
-        unordered_map<char,int> mp;
-        for(auto x: t){
-            mp[x]++;
-
+    string minWindow(string s, string t) {
+        int l = 0, r = 0, start = -1, minLen = INT_MAX;
+        unordered_map<int, int> mp;
+        for (int i = 0; i < t.length(); i++) {
+            mp[t[i]]++;
         }
-        int count=mp.size();
-        int start=0,left=0,right=0,ans=INT_MAX;
-        while(right<s.length()){
-            mp[s[right]]--;
-            if(mp[s[right]]==0){
+        int count = mp.size();
+        while (r < s.length()) {
+            if (--mp[s[r]] == 0)
                 count--;
+
+            if (count == 0) {
+                while (true) {
+                    if (mp[s[l]] < 0) {
+                        mp[s[l]]++;
+                        l++;
+                    } else {
+                        break;
+                    }
+                }
+                if (r - l + 1 < minLen) {
+                    minLen = r - l + 1;
+                    start = l;
+                }
             }
-              if(count==0){
-                   while(count==0){
-                      if(ans>right-left+1){
-                        ans=right-left+1;
-                        start=left;
-                      }
-                      mp[s[left]]++;
-                      if(mp[s[left]]>0){
-                        count++;
-                      }
-                      left++;
-                   }
-                   //left++;
-              }
-            right++;
+
+            r++;
         }
-        if(ans!=INT_MAX)return s.substr(start,ans);
-        else return "";
+        return start == -1 ? "" : s.substr(start, minLen);
     }
 };
