@@ -17,7 +17,7 @@ public:
     int minEatingSpeed(vector<int>& piles, int h) {
         int low =1;
         int high = *max_element(piles.begin(), piles.end()); //highest ffrom the pile
-        while(low < high){  //now here istead of piles, our search space will be 1 to max[piles] and whichever satisfies eating in h hour , and is min , that will be answer
+        while(high-low>1){  //now here istead of piles, our search space will be 1 to max[piles] and whichever satisfies eating in h hour , and is min , that will be answer
             int mid = (low+high)/2;
             if(canEat(piles,mid,h)){ //if its true, this is counted and shrinked high to get more lowest value (min)
                 high=mid;
@@ -25,6 +25,10 @@ public:
                 low=mid+1;
             }
         }
-    return low;
+        if(canEat(piles,low,h)){
+            return low;
+        }else{
+           return high;
+        }
     }
 };
