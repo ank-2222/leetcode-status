@@ -8,20 +8,24 @@ class Solution {
     }
 
 public:
-    double largestTriangleArea(vector<vector<int>>& points) {
-        double maxArea;
-        int n =points.size();
+   double largestTriangleArea(vector<vector<int>>& points) {
+        double maxArea = 0.0;   // initialize
+        int n = points.size();
+
         for (int i = 0; i < n; i++) {             // pick first point
             for (int j = i + 1; j < n; j++) {     // pick second point
                 for (int k = j + 1; k < n; k++) { // pick third point
-                    // calculate area of triangle points[i], points[j],
-                    // points[k]
-                    double area =
-                        calculateSize(points[i], points[j], points[k]);
+                    // calculate area of triangle points[i], points[j], points[k]
+                    double area = abs(
+                        (points[j][0] - points[i][0]) * (points[k][1] - points[i][1]) -
+                        (points[j][1] - points[i][1]) * (points[k][0] - points[i][0])
+                    ) * 0.5;
+
                     maxArea = max(maxArea, area);
                 }
             }
         }
+
         return maxArea;
     }
 };
