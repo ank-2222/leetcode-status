@@ -15,16 +15,16 @@ public:
         if (!head || head->next == nullptr)
             return head;
 
-        ListNode* prev = nullptr; 
+        ListNode* prev = nullptr;  // initialize
         ListNode* curr = head;
         ListNode* next = nullptr;
         while (curr != nullptr) {
 
-            next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
+            next = curr->next;  // first storing reference of next
+            curr->next = prev;  // reversing
+            prev = curr;  //updating previous to next element for 2nd iteration
+            curr = next;  //updating for while condition
         }
-        return prev;
+        return prev;  //return prev as head
     }
 };
