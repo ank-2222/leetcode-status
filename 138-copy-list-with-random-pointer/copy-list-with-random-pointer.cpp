@@ -1,53 +1,34 @@
-/*
-// Definition for a Node.
-class Node {
-public:
-    int val;
-    Node* next;
-    Node* random;
-    
-    Node(int _val) {
-        val = _val;
-        next = NULL;
-        random = NULL;
-    }
-};
-*/
-
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
+        if(!head) return nullptr;
 
         Node* curr = head;
-
+    
         while(curr){
             Node* copy = new Node(curr->val);
-            Node* temp = curr->next;
-            curr->next=copy;
-            copy->next = temp;
-            curr=curr->next->next;
-
+            copy->next = curr->next;
+            curr->next = copy;
+            curr = copy->next;
         }
 
-        Node* original =head;
-        while(original){
-            if(original->random != NULL){
-                original->next->random = original->random->next;
-            }
-            original=original->next->next;
+      
+        curr = head;
+        while(curr){
+            if(curr->random)
+                curr->next->random = curr->random->next;
+            curr = curr->next->next;
         }
 
-        Node* newHead = new Node(-1); 
-        Node* newH = newHead;
-        Node* newcurr = head;  
-        while(newcurr){
-          Node* copy = newcurr->next;
-          newcurr->next= copy->next;
-          newH->next = copy;
-          newH=newH->next;
-          newcurr=newcurr->next;
-            
+        Node* copyHead = head->next;
+        curr = head;
+        while(curr){
+            Node* copy = curr->next;
+            curr->next = copy->next;       
+            copy->next = copy->next ? copy->next->next : nullptr;  
+            curr = curr->next;
         }
-        return newHead->next;
+
+        return copyHead;
     }
 };
