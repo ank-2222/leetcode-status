@@ -26,7 +26,7 @@ public:
                 break;
         }
 
-        if (!fast || !fast->next)
+        if (!fast || !fast->next)   //this is condition for no cycle detected, so return null 
             return nullptr;
         curr = head;
         while (curr != slow) {
