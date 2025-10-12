@@ -16,7 +16,7 @@ public:
                     ++i;
                 }
                 --i; // Adjust index since outer loop will increment
-                ans += num * sign;
+                ans += num * sign;  //this line is evaluation where it is adding or subtracting from result on the go, cause suppost ans+ 3 is the nexct expression , so after ans, cursor goes to + and sign is updated , and then when it comes to 3 , sign is already updated, and this line will evaluate expression acc to previous sign 
             } else if (s[i] == '+') {
                 sign = 1;
             } else if (s[i] == '-') {
