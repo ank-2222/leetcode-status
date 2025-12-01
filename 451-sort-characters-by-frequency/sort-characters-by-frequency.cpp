@@ -7,11 +7,11 @@ public:
             pq;
 
             for(int i =0;i<s.length();i++){
-                mp[s[i]]++;
+                mp[s[i]]++;  //O(1)
             }
 
             for(auto x:mp){
-                pq.push({x.second,x.first});
+                pq.push({x.second,x.first}); //O(logN) - worst case
             }
 
             string ans="";
@@ -23,5 +23,5 @@ public:
                 pq.pop();
             }
             return ans;
-    }
+    }  // total TC - O(log N)
 };
