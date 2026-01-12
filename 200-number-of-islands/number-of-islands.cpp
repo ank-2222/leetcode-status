@@ -1,14 +1,12 @@
 class Solution {
 public:
-    void bfs(int i, int j, vector<vector<int>>& vis,
-             vector<vector<char>>& grid) {
-
+    void bfs(int i, int j, vector<vector<char>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
 
         queue<pair<int, int>> q;
         q.push({i, j});
-        vis[i][j] = 1;
+        grid[i][j] = '0';   // mark visited
 
         int dr[4] = {-1, 1, 0, 0};
         int dc[4] = {0, 0, -1, 1};
@@ -22,9 +20,9 @@ public:
                 int nc = c + dc[k];
 
                 if (nr >= 0 && nr < m && nc >= 0 && nc < n &&
-                    grid[nr][nc] == '1' && !vis[nr][nc]) {
+                    grid[nr][nc] == '1') {
 
-                    vis[nr][nc] = 1;
+                    grid[nr][nc] = '0';  // mark visited
                     q.push({nr, nc});
                 }
             }
@@ -35,14 +33,12 @@ public:
         int m = grid.size();
         int n = grid[0].size();
 
-        vector<vector<int>> vis(m, vector<int>(n, 0));
         int count = 0;
-
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1' && !vis[i][j]) {
+                if (grid[i][j] == '1') {
                     count++;
-                    bfs(i, j, vis, grid);
+                    bfs(i, j, grid);
                 }
             }
         }
