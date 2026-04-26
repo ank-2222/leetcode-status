@@ -1,68 +1,35 @@
 class Solution {
-    struct Node {
-        int r, c;   // current row, col
-        int pr, pc; // parent row col
-    };
-
 public:
-    bool cyclePresent(int i, int j, int m, int n, vector<vector<char>>& grid,
-                      vector<vector<int>>& vis) {
-        // traversing to next cell
-        vector<int> delRow = {-1, 1, 0, 0};
-        vector<int> delCol = {0, 0, -1, 1};
-
-        queue<Node> q;
-        q.push({i, j, -1, -1}); // inital cell
-        vis[i][j] = 1;
-        while (!q.empty()) {
-            int r = q.front().r;
-            int c = q.front().c;
-            int pr = q.front().pr;
-            int pc = q.front().pc;
-            q.pop();
-            for (int i = 0; i < 4; i++) {
-                int nRow = r + delRow[i]; // new row
-                int nCol = c + delCol[i]; // new col
-
-                // bound check
-                if (nRow >= 0 && nRow < grid.size() && nCol >= 0 &&
-                    nCol < grid[0].size() && grid[nRow][nCol] == grid[r][c]) {
-                    if (vis[nRow]
-                           [nCol]) { // if encountered with visited, need to
-                                     // check if thats parent or other, if not
-                                     // parent that means some other branch of
-                                     // bfs in graph has already visited it and
-                                     // there is cycle
-                        if (!(nRow == pr &&
-                              nCol ==
-                                  pc)) // here we have to check for both
-                                       // simaltaneously, rather than checking
-                                       // each , as it will do diagonal mismatch
-                                       // (nRow != pr && nCol !=pc) is wrong
-                            return true;
-                    } else {
-                        vis[nRow][nCol] = 1;
-                        q.push({nRow, nCol, r, c});
-                    }
-                }
-            }
+    int find(int x, vector<int>& parent) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
         }
+        return x;
+    }
+
+    bool union_sets(int a, int b, vector<int>& parent) {
+        int ra = find(a, parent), rb = find(b, parent);
+        if (ra == rb) 
+            return true;
+        parent[ra] = rb;
         return false;
     }
 
     bool containsCycle(vector<vector<char>>& grid) {
-        int m = grid.size();
-        int n = grid[0].size();
-
-        vector<vector<int>> vis(m, vector<int>(n, 0));
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!vis[i][j]) { // starting from non visited, this helps in
-                                  // comparing all component of graphs
-                    if (cyclePresent(i, j, m, n, grid, vis)) {
+        int rows = grid.size(), cols = grid[0].size();
+        vector<int> parent(rows * cols);
+        for (int i = 0; i < rows * cols; i++) 
+            parent[i] = i;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (j + 1 < cols && grid[i][j] == grid[i][j + 1]) {
+                    if (union_sets(i * cols + j, i * cols + j + 1, parent)) 
                         return true;
-                    }
+                }
+                if (i + 1 < rows && grid[i][j] == grid[i + 1][j]) {
+                    if (union_sets(i * cols + j, (i + 1) * cols + j, parent)) 
+                        return true;
                 }
             }
         }
